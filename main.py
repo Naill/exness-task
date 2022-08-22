@@ -1,21 +1,15 @@
-import time
-
 from http.server import HTTPServer
-from urllib.parse import urlparse, parse_qs
-from configparser import ConfigParser
+from prometheus_client import start_http_server
 
 from modules.NeuralHTTP import NeuralHTTP
 
 HOST = "localhost"
-PORT = 8888
-
-config = ConfigParser()
-config.read("config")
-
-config_data = config["default"]
-
-server = HTTPServer((HOST, PORT), NeuralHTTP)
-print("Server running on %s:%s" % (HOST, PORT))
+PORT_HTTP = 8888
+PORT_PROMETHEUS = 8000
+start_http_server(PORT_PROMETHEUS)
+server = HTTPServer((HOST, PORT_HTTP), NeuralHTTP)
+print("Server running on %s:%s" % (HOST, PORT_HTTP))
+print("Prometheus metrics  available on port %s /metrics" % PORT_PROMETHEUS)
 
 server.serve_forever()
 server.server_close

@@ -1,3 +1,3 @@
 [default]
-store_safe=file
+db_safe=True
 
