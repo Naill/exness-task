@@ -24,17 +24,12 @@ spec:
           image: "{{ .Values.image.repository }}{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 8080
+            - name: servicemonitor
+              containerPort: {{ .Values.servicemonitor.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /hello
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /hello
-              port: http
+            - name: http
+              containerPort: {{ .Values.deployment.port }}
+              protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:

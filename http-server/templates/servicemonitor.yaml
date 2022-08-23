@@ -1,16 +1,15 @@
-{{- if .Values.servicemonitor.enabled }}
-  apiVersion: monitoring.coreos.com/v1
-  kind: ServiceMonitor
-  metadata:
-    name: {{ include "http-server.fullname" . }}
-    labels:
-      name: {{ include "http-server.labels" . }}
-  spec:
-    endpoints:
-      interval: 10s
-      path: /metrics
-      port: http
-    selector:
-      matchLabels:
-        {{- include "configuration-service.serviceMonitorLabels" . | nindent 6 }}
+{{- if .Values.servicemonitor.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "http-server.fullname" . }}
+  labels:
+    name: {{ include "http-server.fullname" . }}-prometheus-monitor
+spec:
+  endpoints:
+  - interval: 10s
+    path: /metrics
+    port: "{{ .Values.servicemonitor.port }}"
+  selector:
+    matchLabels: {{ include "http-server.serviceMonitorLabels" . | nindent 6 }}
 {{- end }}

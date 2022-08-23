@@ -5,14 +5,14 @@
 image:
   repository: ""
   name: http-server
-  pullPolicy: IfNotPresent
+  pullPolicy: Never
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
 persistence:
-  http-server:
+  http:
     accessMode: ReadWriteOnce
-    size: 10Mbi
+    size: 10Mi
 
 nameOverride: ""
 fullnameOverride: ""
@@ -27,11 +27,15 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+deployment:
+  port: 8000
+
 service:
   type: ClusterIP
   port: 80
 
 servicemonitor:
-  enabled: false
+  enabled: true
+  port: 8001
 
 nodeSelector: {}
