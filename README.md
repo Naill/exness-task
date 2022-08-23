@@ -7,14 +7,31 @@
 db_safe=True
 ```
 
-2. Сборка контейнера:
+2. Если проверяем в minikube, то необходимо собрать наш контейнер для него
+```
+eval $(minikube docker-env)
+https://minikube.sigs.k8s.io/docs/handbook/pushing/
+```
+
+3. Сборка контейнера:
 ```
 docker build -t http-server .
 ```
 
-3. Задеплоить контейнер в Kubernetes:
+4. В случае, если мы разворачиваем на голом кластере, то необходимо добавить сущности prometheus-operator: servicemonitor, alertmanager etc.:
 ```
-helm install -f
+kubectl create -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/master/bundle.yaml
+```
+
+5. Задеплоить контейнер в Kubernetes:
+```
+helm upgrade --install  -f ./http-server/values.yaml   http ./http-server
+```
+6. Мы можем поднять контейнер и с него отправить запросы на наш под, сервис:
+```
+kubectl run -t -i --rm --image amouat/network-utils netwutils bash
+Отправка запроса
+curl -X GET http-http-server/hello
 ```
 
 # Задание

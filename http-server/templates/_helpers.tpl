@@ -48,6 +48,8 @@ Selector labels
 {{- define "http-server.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "http-server.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app: {{ include "http-server.name" . }}
+prometheus-actuator: "true"
 {{- end }}
 
 {{/*

@@ -15,7 +15,7 @@ persistence:
     size: 10Mi
 
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: "http-server"
 
 podAnnotations: {}
 
@@ -35,7 +35,7 @@ service:
   port: 80
 
 servicemonitor:
-  enabled: true
+  enabled: false
   port: 8001
 
 nodeSelector: {}
