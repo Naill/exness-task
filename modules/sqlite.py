@@ -39,6 +39,10 @@ class SQLite:
         sql_request.execute(
             'SELECT * FROM users_requests WHERE user = "{}"'.format(user)
         )
-        user_data = sql_request.fetchall()
+        user_data = self.new_method(sql_request)
         sql_request.close
+        return user_data
+
+    def new_method(self, sql_request):
+        user_data = sql_request.fetchall()
         return user_data

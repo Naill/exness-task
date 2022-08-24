@@ -46,22 +46,27 @@ class NeuralHTTP(BaseHTTPRequestHandler):
             self.request_ERROR()
 
     def user_POST(self, dict_data):
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(bytes("Request was processed", "utf-8"))
         if self._check_TYPE_STORE():
             db_data = SQLite()
             db_data.write_DATA_SQLITE(dict_data)
         else:
             self._write_DATA_FILE(dict_data)
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(bytes("User was added", "utf-8"))
 
     def user_GET(self, user):
         db_data = SQLite()
         user_data = db_data.fetch_DATA_SQLITE(user)
         self.send_response(200)
         self.end_headers()
-        user_listsorted = pandas.DataFrame(user_data, columns=["username", "timestamp"])
-        self.wfile.write(bytes(str(user_listsorted), "utf-8"))
+        if user_data:
+            user_listsorted = pandas.DataFrame(
+                user_data, columns=["username", "timestamp"]
+            )
+            self.wfile.write(bytes(str(user_listsorted), "utf-8"))
+        else:
+            self.wfile.write(bytes("Db doesn't have records with this user", "utf-8"))
 
     def request_ERROR(self):
         self.send_response(200)
